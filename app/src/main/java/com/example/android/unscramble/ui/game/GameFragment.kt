@@ -48,7 +48,8 @@ class GameFragment : Fragment() {
     ): View {
         // Inflate the layout XML file and return a binding object instance
         binding = GameFragmentBinding.inflate(inflater, container, false)
-        Log.d("GameFragment", "GameFragment created/re-created!")
+        Log.d("GameFragment", "Word: ${viewModel.currentScrambledWord} " +
+        "Score: ${viewModel.score} WordCount: ${viewModel.currentWordCount}")
         return binding.root
     }
 
@@ -60,9 +61,13 @@ class GameFragment : Fragment() {
         binding.skip.setOnClickListener { onSkipWord() }
         // Update the UI
         updateNextWordOnScreen()
-        binding.score.text = getString(R.string.score, 0)
+        updateScoreOnScreen()
+    }
+
+    fun updateScoreOnScreen() {
+        binding.score.text = getString(R.string.score, viewModel.score)
         binding.wordCount.text = getString(
-                R.string.word_count, 0, MAX_NO_OF_WORDS)
+            R.string.word_count, viewModel.currentWordCount, MAX_NO_OF_WORDS)
     }
 
     /*
@@ -82,6 +87,7 @@ class GameFragment : Fragment() {
         } else {
             setErrorTextField(true)
         }
+        updateScoreOnScreen()
     }
 
     /*
@@ -92,18 +98,10 @@ class GameFragment : Fragment() {
         if (viewModel.nextWord()) {
             setErrorTextField(false)
             updateNextWordOnScreen()
+            updateScoreOnScreen()
         } else {
             showFinalScoreDialog()
         }
-    }
-
-    /*
-     * Gets a random word for the list of words and shuffles the letters in it.
-     */
-    private fun getNextScrambledWord(): String {
-        val tempWord = allWordsList.random().toCharArray()
-        tempWord.shuffle()
-        return String(tempWord)
     }
 
     /*
@@ -111,8 +109,10 @@ class GameFragment : Fragment() {
      * restart the game.
      */
     private fun restartGame() {
+        viewModel.reinitializeData()
         setErrorTextField(false)
         updateNextWordOnScreen()
+        updateScoreOnScreen()
     }
 
     /*
