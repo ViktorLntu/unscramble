@@ -3,7 +3,6 @@ package com.example.android.unscramble.ui.game
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.TtsSpan
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -35,16 +34,10 @@ class GameViewModel : ViewModel() {
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        Log.d("GameFragment", "GameViewModel destroyed!")
-    }
-
     private var wordsList: MutableList<String> = mutableListOf()
     private lateinit var currentWord: String
 
     init {
-        Log.d("GameFragment", "GameViewModel created!")
         getNextWord()
     }
 

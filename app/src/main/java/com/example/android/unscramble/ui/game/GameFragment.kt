@@ -137,9 +137,4 @@ class GameFragment : Fragment() {
             }
             .show()
     }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("GameFragment", "GameFragment destroyed!")
-    }
 }
